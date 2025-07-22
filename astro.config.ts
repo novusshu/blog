@@ -18,6 +18,7 @@ import path from 'path'
 
 export default defineConfig({
   site: themeConfig.site.website,
+  base: "/blog/", 
   output: "static",
   image: {
     service: {
