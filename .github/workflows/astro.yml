@@ -25,26 +25,31 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+          run_install: false
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: "pnpm"
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 8  # or whatever version you're using
-          run_install: true
+      - name: Install dependencies
+        run: pnpm install
+        working-directory: ${{ env.BUILD_PATH }}
 
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
 
       - name: Build with Astro
-        run: pnpm astro build \
-              --site "${{ steps.pages.outputs.origin }}" \
-              --base "${{ steps.pages.outputs.base_path }}"
+        run: |
+          pnpm astro build \
+            --site "${{ steps.pages.outputs.origin }}" \
+            --base "${{ steps.pages.outputs.base_path }}"
         working-directory: ${{ env.BUILD_PATH }}
 
       - name: Upload artifact
